@@ -40,14 +40,14 @@ async function onSearch(e) {
 
 async function fetchArticles() {
     try {
-        loadButton.disable()
-        newsApiService .incrementPage()
-        addMarkupContainer()
         galleryHeight = refs.gallery.offsetHeight
-        loadButton.enable()
-        setTimeout(() => {
-            scrollingPage(galleryHeight)
-        }, 500);
+        loadButton.disable()
+        newsApiService.incrementPage()
+        addMarkupContainer()
+           .then(data => {
+                loadButton.enable()
+                scrollingPage(galleryHeight)
+            })
     } catch (error) {
         errorMessage('Упс, что-то пошло не так', 1000)
     }
@@ -62,7 +62,7 @@ function scrollingPage(height, scroll = 'smooth') {
 }
 
 function addMarkupContainer() {
-    newsApiService .fetchArticles()
+    return newsApiService.fetchArticles()
         .then(data => {
             const cardList =card(data)
             foundMarkup(cardList)
